@@ -1,4 +1,5 @@
 const Diary = require('../models/Diary')
+const User = require("../models/User")
 
 
 async function index(req, res) {
@@ -31,6 +32,8 @@ async function show_username(req, res) {
     }
 }
 
+
+
 async function show_category(req, res) {
     try {
         const category = req.params.category.toUpperCase()
@@ -40,6 +43,17 @@ async function show_category(req, res) {
         res.status(404).json({ "error": err.message })
     }
 };
+
+async function showByUser(req,res){
+    try{
+        const username = req.params.user
+        const user_id = (await User.getOneByUsername(username)).id
+        const entries = await Diary.getByUserID(user_id)
+
+    } catch(err) {
+
+    }
+}
 
 async function show(req, res) {
     try {
