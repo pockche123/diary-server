@@ -1,12 +1,10 @@
 const db = require("../database/connect");
 class Diary {
-    constructor({ id, title, content, timestamp, date, time, category, user_id }) {
+    constructor({ id, title, content, timestamp, category, user_id }) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.timestamp = timestamp;
-        this.date = date;
-        this.time = time;
         this.category = category;
         this.user_id = user_id;
     }
@@ -19,7 +17,7 @@ class Diary {
         return response.rows.map(g => new Diary(g));
     }
     static async getByDate(date) {
-        const response = await db.query("SELECT * FROM DiaryEntry WHERE date = TO_DATE($1, 'YYYY-MM-DD');",[date]);
+        const response = await db.query("SELECT * FROM DiaryEntry WHERE DATE(timestamp) = $1;",[date]);
 
         if (response.rows.length === 0) {
             throw new Error("No entries found for the given date.");
@@ -45,8 +43,8 @@ class Diary {
     }
 
     static async create(data) {
-        const {title, content, timestamp, date, time, category, user_id } = data;
-        const response = await db.query('INSERT INTO DiaryEntry (title, content, timestamp, date, time, category, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;',[title, content, timestamp, date, time, category, user_id]);
+        const {title, content, category, user_id } = data;
+        const response = await db.query('INSERT INTO DiaryEntry (title, content, category, user_id) VALUES ($1, $2, $3, $4) RETURNING *;',[title, content, category, user_id]);
         const entryId = response.rows[0].id;
         const newEntry = await Diary.getOneById(entryId);
         return newEntry;
