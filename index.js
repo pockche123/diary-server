@@ -1,8 +1,9 @@
-require('dotenv').config()
+require("dotenv").config();
 
-const app = require('./app')
-const port = process.env.PORT || 3000
+const app = require("./app");
+
+port = process.env.PORT
 
 app.listen(port, () => {
-    console.log(`Express departing from port ${port}`)
+    console.log(`API listening on ${port}`);
 })
