@@ -1,5 +1,5 @@
 const Diary = require('../models/Diary')
-const User = require("../models/User")
+// const User = require("../models/User")
 
 
 async function index(req, res) {
@@ -44,16 +44,16 @@ async function show_category(req, res) {
     }
 };
 
-async function showByUser(req,res){
-    try{
-        const username = req.params.user
-        const user_id = (await User.getOneByUsername(username)).id
-        const entries = await Diary.getByUserID(user_id)
+// async function showByUser(req,res){
+//     try{
+//         const username = req.params.user
+//         const user_id = (await User.getOneByUsername(username)).id
+//         const entries = await Diary.getByUserID(user_id)
 
-    } catch(err) {
+//     } catch(err) {
 
-    }
-}
+//     }
+// }
 
 async function show(req, res) {
     try {
