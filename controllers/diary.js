@@ -21,6 +21,16 @@ async function show_date(req, res) {
     }
 };
 
+async function show_username(req, res) {
+    try {
+        const { username } = req.params;
+        const entry = await Diary.getByUsername(username);
+        res.status(200).json(entry);
+    } catch (error) {
+        res.status(404).json({'error': error.message})
+    }
+}
+
 async function show_category(req, res) {
     try {
         const category = req.params.category.toUpperCase()
@@ -77,5 +87,5 @@ async function destroy(req, res) {
 
 
 module.exports = {
-    index, show_date, show_category, show, create, update, destroy
+    index, show_date, show_category, show_username, show, create, update, destroy
 };

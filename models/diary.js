@@ -35,6 +35,22 @@ class Diary {
         return response.rows.map(entry => new Diary(entry));
     }
 
+        static async getByUsername(username) {
+        const response = await db.query(`
+            SELECT de.*
+            FROM DiaryEntry de
+            JOIN users u ON de.user_id = u.id
+            WHERE u.username = $1
+            ORDER BY de.id DESC;
+        `, [username]);
+
+        if (response.rows.length === 0) {
+            throw new Error(`No entries available for user ${username}.`);
+        }
+
+        return response.rows.map(entry => new Diary(entry));
+    }
+
     static async getOneById(id) {
         const response = await db.query("SELECT * FROM DiaryEntry WHERE id = $1;",[id]);
 
